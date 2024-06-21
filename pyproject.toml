@@ -5,7 +5,7 @@ authors = ["Nazanin Donyapour <nazanin.donyapour@nih.gov>"]
 description = "Rxiv XML/JSON parsing and typehints."
 readme = "README.md"
 license = "MIT"
-packages = [{include = "rxiv_types", from = "src"}]
+packages = [{include = "drugbank_schemas", from = "src"}]
 homepage = "https://github.com/nicholas-schaub/rxiv-types"
 repository = "https://github.com/nicholas-schaub/rxiv-types"
 classifiers = [
@@ -20,7 +20,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Bio-Informatics",
     "Topic :: Scientific/Engineering :: Information Analysis",
     "Topic :: Scientific/Engineering :: Medical Science Apps.",
-    "Topic :: Text Processing :: Markup :: XSD",
+    "Topic :: Text Processing :: Markup :: XML",
 ]
 
 [tool.poetry.urls]
@@ -28,15 +28,15 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-xsdata-pydantic = {extras = ["cli", "lxml", "soap"], version = "^22.10"}
+xsdata-pydantic = {extras = ["cli", "lxml", "soap"], version = "24.5"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.3.0"
-ruff = "^0.0.270"
+ruff = "^0.3.0"
 pre-commit = "^3.3.2"
 nox = "^2023.4.22"
 requests = "^2.31.0"
-pytest = "^7.3.1"
+pytest = "^7.4"
 bump2version = "^1.0.1"
 pytest-cov = "^4.1.0"
 pytest-xdist = "^3.3.1"

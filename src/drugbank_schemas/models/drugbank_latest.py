@@ -1,18 +1,17 @@
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict
 from xsdata.models.datatype import XmlDate
-from xsdata_pydantic.fields import field
 
 __NAMESPACE__ = "http://www.drugbank.ca"
 
 
-class ActionListType(BaseModel):
+@dataclass
+class ActionListType:
     class Meta:
         name = "action-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     action: List[str] = field(
         default_factory=list,
         metadata={
@@ -22,11 +21,11 @@ class ActionListType(BaseModel):
     )
 
 
-class AffectedOrganismListType(BaseModel):
+@dataclass
+class AffectedOrganismListType:
     class Meta:
         name = "affected-organism-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     affected_organism: List[str] = field(
         default_factory=list,
         metadata={
@@ -37,11 +36,11 @@ class AffectedOrganismListType(BaseModel):
     )
 
 
-class AhfsCodeListType(BaseModel):
+@dataclass
+class AhfsCodeListType:
     class Meta:
         name = "ahfs-code-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     ahfs_code: List[str] = field(
         default_factory=list,
         metadata={
@@ -52,40 +51,85 @@ class AhfsCodeListType(BaseModel):
     )
 
 
-class AtcCodeLevelType(BaseModel):
+@dataclass
+class ArticleType:
+    class Meta:
+        name = "article-type"
+
+    ref_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ref-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    pubmed_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "pubmed-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    citation: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class AtcCodeLevelType:
     class Meta:
         name = "atc-code-level-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
             "required": True,
         },
     )
-    code: str = field(
-        metadata={
-            "type": "Attribute",
-            "required": True,
-        }
-    )
-
-
-class BrandType(BaseModel):
-    class Meta:
-        name = "brand-type"
-
-    model_config = ConfigDict(defer_build=True)
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-        },
-    )
-    company: Optional[str] = field(
+    code: Optional[str] = field(
         default=None,
         metadata={
             "type": "Attribute",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class AttachmentType:
+    class Meta:
+        name = "attachment-type"
+
+    ref_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ref-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    title: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    url: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
         },
     )
 
@@ -116,6 +160,7 @@ class CalculatedPropertyKindType(Enum):
     RULE_OF_FIVE = "Rule of Five"
     GHOSE_FILTER = "Ghose Filter"
     MDDR_LIKE_RULE = "MDDR-Like Rule"
+    VEBER_S_RULE = "Veber's Rule"
 
 
 class CalculatedPropertySourceType(Enum):
@@ -123,78 +168,86 @@ class CalculatedPropertySourceType(Enum):
     ALOGPS = "ALOGPS"
 
 
-class CategoryType(BaseModel):
+@dataclass
+class CategoryType:
     class Meta:
         name = "category-type"
 
-    model_config = ConfigDict(defer_build=True)
-    category: str = field(
+    category: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    mesh_id: str = field(
+    mesh_id: Optional[str] = field(
+        default=None,
         metadata={
             "name": "mesh-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class ClassificationType(BaseModel):
+@dataclass
+class ClassificationType:
     """Drug classification is obtained from ClassyFire (http://classyfire.wishartlab.com)."""
 
     class Meta:
         name = "classification-type"
 
-    model_config = ConfigDict(defer_build=True)
-    description: str = field(
+    description: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    direct_parent: str = field(
+    direct_parent: Optional[str] = field(
+        default=None,
         metadata={
             "name": "direct-parent",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    kingdom: str = field(
+    kingdom: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    superclass: str = field(
+    superclass: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    class_value: str = field(
+    class_value: Optional[str] = field(
+        default=None,
         metadata={
             "name": "class",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    subclass: str = field(
+    subclass: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     alternative_parent: List[str] = field(
         default_factory=list,
@@ -213,31 +266,34 @@ class ClassificationType(BaseModel):
     )
 
 
-class DosageType(BaseModel):
+@dataclass
+class DosageType:
     class Meta:
         name = "dosage-type"
 
-    model_config = ConfigDict(defer_build=True)
-    form: str = field(
+    form: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    route: str = field(
+    route: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    strength: str = field(
+    strength: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
@@ -246,24 +302,24 @@ class DrugTypeType(Enum):
     BIOTECH = "biotech"
 
 
-class DrugbankDrugIdType(BaseModel):
-    """The DrugBank ID is used to uniquely identify a drug entry.
+@dataclass
+class DrugbankDrugSaltIdType:
+    """The DrugBank ID is used to uniquely identify a drug or salt entry.
 
     There is a primary ID and several secondary IDs that come from older
     ID formats or merged entries.
     """
 
     class Meta:
-        name = "drugbank-drug-id-type"
+        name = "drugbank-drug-salt-id-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
             "required": True,
             "min_length": 1,
             "white_space": "collapse",
-            "pattern": r"DB[0-9]{5}|APRD[0-9]{5}|BIOD[0-9]{5}|BTD[0-9]{5}|EXPT[0-9]{5}|NUTR[0-9]{5}",
+            "pattern": r"DB[0-9]{5}|DBSALT[0-9]{6}|APRD[0-9]{5}|BIOD[0-9]{5}|BTD[0-9]{5}|EXPT[0-9]{5}|NUTR[0-9]{5}",
         },
     )
     primary: bool = field(
@@ -274,7 +330,8 @@ class DrugbankDrugIdType(BaseModel):
     )
 
 
-class DrugbankMetaboliteIdType(BaseModel):
+@dataclass
+class DrugbankMetaboliteIdType:
     """The metabolite DrugBank ID uniquely identifies a metabolite entry.
 
     Multiple IDs indicate a merged entry.
@@ -283,7 +340,6 @@ class DrugbankMetaboliteIdType(BaseModel):
     class Meta:
         name = "drugbank-metabolite-id-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
@@ -291,33 +347,6 @@ class DrugbankMetaboliteIdType(BaseModel):
             "min_length": 1,
             "white_space": "collapse",
             "pattern": r"DBMET[0-9]{5}",
-        },
-    )
-    primary: bool = field(
-        default=False,
-        metadata={
-            "type": "Attribute",
-        },
-    )
-
-
-class DrugbankSaltIdType(BaseModel):
-    """The salt DrugBank ID uniquely identifies a salt entry.
-
-    Multiple IDs indicate a merged entry.
-    """
-
-    class Meta:
-        name = "drugbank-salt-id-type"
-
-    model_config = ConfigDict(defer_build=True)
-    value: str = field(
-        default="",
-        metadata={
-            "required": True,
-            "min_length": 1,
-            "white_space": "collapse",
-            "pattern": r"DBSALT[0-9]{6}",
         },
     )
     primary: bool = field(
@@ -340,12 +369,14 @@ class ExperimentalPropertyKindType(Enum):
     P_KA = "pKa"
     MOLECULAR_WEIGHT = "Molecular Weight"
     MOLECULAR_FORMULA = "Molecular Formula"
+    RADIOACTIVITY = "Radioactivity"
 
 
 class ExternalIdentifierResourceType(Enum):
     UNI_PROT_KB = "UniProtKB"
     WIKIPEDIA = "Wikipedia"
     CH_EBI = "ChEBI"
+    CH_EMBL = "ChEMBL"
     PUB_CHEM_COMPOUND = "PubChem Compound"
     PUB_CHEM_SUBSTANCE = "PubChem Substance"
     DRUGS_PRODUCT_DATABASE_DPD = "Drugs Product Database (DPD)"
@@ -355,10 +386,13 @@ class ExternalIdentifierResourceType(Enum):
     BINDING_DB = "BindingDB"
     NATIONAL_DRUG_CODE_DIRECTORY = "National Drug Code Directory"
     GEN_BANK = "GenBank"
+    THERAPEUTIC_TARGETS_DATABASE = "Therapeutic Targets Database"
     PHARM_GKB = "PharmGKB"
     PDB = "PDB"
     IUPHAR = "IUPHAR"
     GUIDE_TO_PHARMACOLOGY = "Guide to Pharmacology"
+    ZINC = "ZINC"
+    RX_CUI = "RxCUI"
 
 
 class ExternalLinkResourceType(Enum):
@@ -367,11 +401,11 @@ class ExternalLinkResourceType(Enum):
     DRUGS_COM = "Drugs.com"
 
 
-class FoodInteractionListType(BaseModel):
+@dataclass
+class FoodInteractionListType:
     class Meta:
         name = "food-interaction-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     food_interaction: List[str] = field(
         default_factory=list,
         metadata={
@@ -382,30 +416,32 @@ class FoodInteractionListType(BaseModel):
     )
 
 
-class GoClassifierType(BaseModel):
+@dataclass
+class GoClassifierType:
     class Meta:
         name = "go-classifier-type"
 
-    model_config = ConfigDict(defer_build=True)
-    category: str = field(
+    category: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    description: str = field(
+    description: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
 class GroupType(Enum):
     """
-    Drugs are grouped into a category like approved, experimental, illict.
+    Drugs are grouped into a category like approved, experimental, illicit.
     """
 
     APPROVED = "approved"
@@ -414,6 +450,30 @@ class GroupType(Enum):
     WITHDRAWN = "withdrawn"
     NUTRACEUTICAL = "nutraceutical"
     INVESTIGATIONAL = "investigational"
+    VET_APPROVED = "vet_approved"
+
+
+@dataclass
+class InternationalBrandType:
+    class Meta:
+        name = "international-brand-type"
+
+    name: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    company: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
 
 
 class KnownActionType(Enum):
@@ -422,11 +482,42 @@ class KnownActionType(Enum):
     UNKNOWN = "unknown"
 
 
-class ManufacturerType(BaseModel):
+@dataclass
+class LinkType:
+    class Meta:
+        name = "link-type"
+
+    ref_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ref-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    title: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    url: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class ManufacturerType:
     class Meta:
         name = "manufacturer-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
@@ -439,90 +530,121 @@ class ManufacturerType(BaseModel):
             "type": "Attribute",
         },
     )
+    url: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Attribute",
+        },
+    )
 
 
-class MixtureType(BaseModel):
+@dataclass
+class MixtureType:
     class Meta:
         name = "mixture-type"
 
-    model_config = ConfigDict(defer_build=True)
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    ingredients: str = field(
+    ingredients: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
+    )
+    supplemental_ingredients: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "supplemental-ingredients",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
     )
 
 
-class PackagerType(BaseModel):
+@dataclass
+class PackagerType:
     class Meta:
         name = "packager-type"
 
-    model_config = ConfigDict(defer_build=True)
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    url: str = field(
+    url: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class PatentType(BaseModel):
+@dataclass
+class PatentType:
     class Meta:
         name = "patent-type"
 
-    model_config = ConfigDict(defer_build=True)
-    number: str = field(
+    number: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    country: str = field(
+    country: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    approved: str = field(
+    approved: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    expires: str = field(
+    expires: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
+    )
+    pediatric_extension: Optional[bool] = field(
+        default=None,
+        metadata={
+            "name": "pediatric-extension",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
     )
 
 
-class PathwayEnzymeListType(BaseModel):
+@dataclass
+class PathwayEnzymeListType:
     class Meta:
         name = "pathway-enzyme-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     uniprot_id: List[str] = field(
         default_factory=list,
         metadata={
@@ -533,24 +655,41 @@ class PathwayEnzymeListType(BaseModel):
     )
 
 
-class PfamType(BaseModel):
+@dataclass
+class PdbEntryListType:
+    class Meta:
+        name = "pdb-entry-list-type"
+
+    pdb_entry: List[str] = field(
+        default_factory=list,
+        metadata={
+            "name": "pdb-entry",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class PfamType:
     class Meta:
         name = "pfam-type"
 
-    model_config = ConfigDict(defer_build=True)
-    identifier: str = field(
+    identifier: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
@@ -572,11 +711,11 @@ class PolypeptideExternalIdentifierResourceType(Enum):
     GUIDE_TO_PHARMACOLOGY = "Guide to Pharmacology"
 
 
-class PolypeptideSynonymListType(BaseModel):
+@dataclass
+class PolypeptideSynonymListType:
     class Meta:
         name = "polypeptide-synonym-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     synonym: List[str] = field(
         default_factory=list,
         metadata={
@@ -586,7 +725,8 @@ class PolypeptideSynonymListType(BaseModel):
     )
 
 
-class PriceType(BaseModel):
+@dataclass
+class PriceType:
     """
     The price for the given drug in US or Canadian currency.
     """
@@ -594,102 +734,132 @@ class PriceType(BaseModel):
     class Meta:
         name = "price-type"
 
-    model_config = ConfigDict(defer_build=True)
-    description: str = field(
+    description: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    cost: "PriceType.Cost" = field(
+    cost: Optional["PriceType.Cost"] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    unit: str = field(
+    unit: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
-    class Cost(BaseModel):
-        model_config = ConfigDict(defer_build=True)
+    @dataclass
+    class Cost:
         value: str = field(
             default="",
             metadata={
                 "required": True,
             },
         )
-        currency: str = field(
+        currency: Optional[str] = field(
+            default=None,
             metadata={
                 "type": "Attribute",
                 "required": True,
-            }
+            },
         )
 
 
-class ReactionElementType(BaseModel):
+class ProductCountryType(Enum):
+    """Drug products are currently only imported from the U.S.
+
+    (FDA) and Canada (Canadian Drug Product Database, or DPD).
+    """
+
+    US = "US"
+    CANADA = "Canada"
+    EU = "EU"
+
+
+class ProductSourceType(Enum):
+    """
+    Drug products are currently only imported from the FDA and the Canadian Drug
+    Product Database, or DPD.
+    """
+
+    FDA_NDC = "FDA NDC"
+    DPD = "DPD"
+    EMA = "EMA"
+
+
+@dataclass
+class ReactionElementType:
     class Meta:
         name = "reaction-element-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: str = field(
+    drugbank_id: Optional[str] = field(
+        default=None,
         metadata={
             "name": "drugbank-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class ReactionEnzymeType(BaseModel):
+@dataclass
+class ReactionEnzymeType:
     class Meta:
         name = "reaction-enzyme-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: str = field(
+    drugbank_id: Optional[str] = field(
+        default=None,
         metadata={
             "name": "drugbank-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    uniprot_id: str = field(
+    uniprot_id: Optional[str] = field(
+        default=None,
         metadata={
             "name": "uniprot-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class SequenceListType(BaseModel):
+@dataclass
+class SequenceListType:
     class Meta:
         name = "sequence-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     sequence: List["SequenceListType.Sequence"] = field(
         default_factory=list,
         metadata={
@@ -698,8 +868,8 @@ class SequenceListType(BaseModel):
         },
     )
 
-    class Sequence(BaseModel):
-        model_config = ConfigDict(defer_build=True)
+    @dataclass
+    class Sequence:
         value: str = field(
             default="",
             metadata={
@@ -707,7 +877,7 @@ class SequenceListType(BaseModel):
             },
         )
         format: str = field(
-            const=True,
+            init=False,
             default="FASTA",
             metadata={
                 "type": "Attribute",
@@ -715,11 +885,11 @@ class SequenceListType(BaseModel):
         )
 
 
-class SequenceType(BaseModel):
+@dataclass
+class SequenceType:
     class Meta:
         name = "sequence-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
@@ -727,7 +897,7 @@ class SequenceType(BaseModel):
         },
     )
     format: str = field(
-        const=True,
+        init=False,
         default="FASTA",
         metadata={
             "type": "Attribute",
@@ -735,11 +905,11 @@ class SequenceType(BaseModel):
     )
 
 
-class SnpAdverseDrugReactionType(BaseModel):
+@dataclass
+class SnpAdverseDrugReactionType:
     class Meta:
         name = "snp-adverse-drug-reaction-type"
 
-    model_config = ConfigDict(defer_build=True)
     protein_name: List[str] = field(
         default_factory=list,
         metadata={
@@ -812,11 +982,11 @@ class SnpAdverseDrugReactionType(BaseModel):
     )
 
 
-class SnpEffectType(BaseModel):
+@dataclass
+class SnpEffectType:
     class Meta:
         name = "snp-effect-type"
 
-    model_config = ConfigDict(defer_build=True)
     protein_name: List[str] = field(
         default_factory=list,
         metadata={
@@ -889,11 +1059,17 @@ class SnpEffectType(BaseModel):
     )
 
 
-class SynonymType(BaseModel):
+class StateType(Enum):
+    SOLID = "solid"
+    LIQUID = "liquid"
+    GAS = "gas"
+
+
+@dataclass
+class SynonymType:
     class Meta:
         name = "synonym-type"
 
-    model_config = ConfigDict(defer_build=True)
     value: str = field(
         default="",
         metadata={
@@ -914,11 +1090,56 @@ class SynonymType(BaseModel):
     )
 
 
-class AtcCodeType(BaseModel):
+@dataclass
+class TextbookType:
+    class Meta:
+        name = "textbook-type"
+
+    ref_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ref-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    isbn: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    citation: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class ArticleListType:
+    class Meta:
+        name = "article-list-type"
+
+    article: List[ArticleType] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class AtcCodeType:
     class Meta:
         name = "atc-code-type"
 
-    model_config = ConfigDict(defer_build=True)
     level: List[AtcCodeLevelType] = field(
         default_factory=list,
         metadata={
@@ -936,12 +1157,12 @@ class AtcCodeType(BaseModel):
     )
 
 
-class BrandListType(BaseModel):
+@dataclass
+class AttachmentListType:
     class Meta:
-        name = "brand-list-type"
+        name = "attachment-list-type"
 
-    model_config = ConfigDict(defer_build=True)
-    brand: List[BrandType] = field(
+    attachment: List[AttachmentType] = field(
         default_factory=list,
         metadata={
             "type": "Element",
@@ -950,39 +1171,42 @@ class BrandListType(BaseModel):
     )
 
 
-class CalculatedPropertyType(BaseModel):
+@dataclass
+class CalculatedPropertyType:
     class Meta:
         name = "calculated-property-type"
 
-    model_config = ConfigDict(defer_build=True)
-    kind: CalculatedPropertyKindType = field(
+    kind: Optional[CalculatedPropertyKindType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    value: str = field(
+    value: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    source: CalculatedPropertySourceType = field(
+    source: Optional[CalculatedPropertySourceType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class CategoryListType(BaseModel):
+@dataclass
+class CategoryListType:
     class Meta:
         name = "category-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     category: List[CategoryType] = field(
         default_factory=list,
         metadata={
@@ -992,11 +1216,11 @@ class CategoryListType(BaseModel):
     )
 
 
-class DosageListType(BaseModel):
+@dataclass
+class DosageListType:
     class Meta:
         name = "dosage-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     dosage: List[DosageType] = field(
         default_factory=list,
         metadata={
@@ -1006,110 +1230,120 @@ class DosageListType(BaseModel):
     )
 
 
-class DrugInteractionType(BaseModel):
+@dataclass
+class DrugInteractionType:
     class Meta:
         name = "drug-interaction-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: DrugbankDrugIdType = field(
+    drugbank_id: Optional[DrugbankDrugSaltIdType] = field(
+        default=None,
         metadata={
             "name": "drugbank-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    description: str = field(
+    description: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class ExperimentalPropertyType(BaseModel):
+@dataclass
+class ExperimentalPropertyType:
     class Meta:
         name = "experimental-property-type"
 
-    model_config = ConfigDict(defer_build=True)
-    kind: ExperimentalPropertyKindType = field(
+    kind: Optional[ExperimentalPropertyKindType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    value: str = field(
+    value: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    source: str = field(
+    source: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class ExternalIdentifierType(BaseModel):
+@dataclass
+class ExternalIdentifierType:
     class Meta:
         name = "external-identifier-type"
 
-    model_config = ConfigDict(defer_build=True)
-    resource: ExternalIdentifierResourceType = field(
+    resource: Optional[ExternalIdentifierResourceType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    identifier: str = field(
+    identifier: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class ExternalLinkType(BaseModel):
+@dataclass
+class ExternalLinkType:
     class Meta:
         name = "external-link-type"
 
-    model_config = ConfigDict(defer_build=True)
-    resource: ExternalLinkResourceType = field(
+    resource: Optional[ExternalLinkResourceType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    url: str = field(
+    url: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class GoClassifierListType(BaseModel):
+@dataclass
+class GoClassifierListType:
     class Meta:
         name = "go-classifier-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     go_classifier: List[GoClassifierType] = field(
         default_factory=list,
         metadata={
@@ -1120,11 +1354,11 @@ class GoClassifierListType(BaseModel):
     )
 
 
-class GroupListType(BaseModel):
+@dataclass
+class GroupListType:
     class Meta:
         name = "group-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     group: List[GroupType] = field(
         default_factory=list,
         metadata={
@@ -1136,11 +1370,40 @@ class GroupListType(BaseModel):
     )
 
 
-class ManufacturerListType(BaseModel):
+@dataclass
+class InternationalBrandListType:
+    class Meta:
+        name = "international-brand-list-type"
+
+    international_brand: List[InternationalBrandType] = field(
+        default_factory=list,
+        metadata={
+            "name": "international-brand",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class LinkListType:
+    class Meta:
+        name = "link-list-type"
+
+    link: List[LinkType] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class ManufacturerListType:
     class Meta:
         name = "manufacturer-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     manufacturer: List[ManufacturerType] = field(
         default_factory=list,
         metadata={
@@ -1150,11 +1413,11 @@ class ManufacturerListType(BaseModel):
     )
 
 
-class MixtureListType(BaseModel):
+@dataclass
+class MixtureListType:
     class Meta:
         name = "mixture-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     mixture: List[MixtureType] = field(
         default_factory=list,
         metadata={
@@ -1164,11 +1427,11 @@ class MixtureListType(BaseModel):
     )
 
 
-class PackagerListType(BaseModel):
+@dataclass
+class PackagerListType:
     class Meta:
         name = "packager-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     packager: List[PackagerType] = field(
         default_factory=list,
         metadata={
@@ -1178,11 +1441,11 @@ class PackagerListType(BaseModel):
     )
 
 
-class PatentListType(BaseModel):
+@dataclass
+class PatentListType:
     class Meta:
         name = "patent-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     patent: List[PatentType] = field(
         default_factory=list,
         metadata={
@@ -1192,33 +1455,35 @@ class PatentListType(BaseModel):
     )
 
 
-class PathwayDrugType(BaseModel):
+@dataclass
+class PathwayDrugType:
     class Meta:
         name = "pathway-drug-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: DrugbankDrugIdType = field(
+    drugbank_id: Optional[DrugbankDrugSaltIdType] = field(
+        default=None,
         metadata={
             "name": "drugbank-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class PfamListType(BaseModel):
+@dataclass
+class PfamListType:
     class Meta:
         name = "pfam-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     pfam: List[PfamType] = field(
         default_factory=list,
         metadata={
@@ -1228,32 +1493,34 @@ class PfamListType(BaseModel):
     )
 
 
-class PolypeptideExternalIdentifierType(BaseModel):
+@dataclass
+class PolypeptideExternalIdentifierType:
     class Meta:
         name = "polypeptide-external-identifier-type"
 
-    model_config = ConfigDict(defer_build=True)
-    resource: PolypeptideExternalIdentifierResourceType = field(
+    resource: Optional[PolypeptideExternalIdentifierResourceType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    identifier: str = field(
+    identifier: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class PriceListType(BaseModel):
+@dataclass
+class PriceListType:
     class Meta:
         name = "price-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     price: List[PriceType] = field(
         default_factory=list,
         metadata={
@@ -1263,11 +1530,199 @@ class PriceListType(BaseModel):
     )
 
 
-class ReactionEnzymeListType(BaseModel):
+@dataclass
+class ProductType:
+    """
+    :ivar name:
+    :ivar labeller:
+    :ivar ndc_id:
+    :ivar ndc_product_code:
+    :ivar dpd_id: DPD ID from the Canadian Drug Product Database. Only
+        present for drugs that are marketed in Canada.
+    :ivar ema_product_code: EMA product code from the European Medicines
+        Agency Database. Only present for products that are authorised
+        by central procedure for marketing in the European Union.
+    :ivar ema_ma_number: EMA marketing authorisation number from the
+        European Medicines Agency Database. Only present for products
+        that are authorised by central procedure for marketing in the
+        European Union.
+    :ivar started_marketing_on:
+    :ivar ended_marketing_on:
+    :ivar dosage_form:
+    :ivar strength:
+    :ivar route:
+    :ivar fda_application_number:
+    :ivar generic:
+    :ivar over_the_counter:
+    :ivar approved:
+    :ivar country:
+    :ivar source:
+    """
+
+    class Meta:
+        name = "product-type"
+
+    name: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    labeller: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    ndc_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ndc-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    ndc_product_code: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ndc-product-code",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    dpd_id: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "dpd-id",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "nillable": True,
+        },
+    )
+    ema_product_code: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ema-product-code",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "nillable": True,
+        },
+    )
+    ema_ma_number: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ema-ma-number",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "nillable": True,
+        },
+    )
+    started_marketing_on: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "started-marketing-on",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    ended_marketing_on: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "ended-marketing-on",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    dosage_form: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "dosage-form",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    strength: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    route: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    fda_application_number: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "fda-application-number",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    generic: Optional[bool] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    over_the_counter: Optional[bool] = field(
+        default=None,
+        metadata={
+            "name": "over-the-counter",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    approved: Optional[bool] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    country: Optional[ProductCountryType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    source: Optional[ProductSourceType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class ReactionEnzymeListType:
     class Meta:
         name = "reaction-enzyme-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     enzyme: List[ReactionEnzymeType] = field(
         default_factory=list,
         metadata={
@@ -1277,12 +1732,12 @@ class ReactionEnzymeListType(BaseModel):
     )
 
 
-class SaltType(BaseModel):
+@dataclass
+class SaltType:
     class Meta:
         name = "salt-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: List[DrugbankSaltIdType] = field(
+    drugbank_id: List[DrugbankDrugSaltIdType] = field(
         default_factory=list,
         metadata={
             "name": "drugbank-id",
@@ -1290,35 +1745,62 @@ class SaltType(BaseModel):
             "namespace": "http://www.drugbank.ca",
         },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    cas_number: str = field(
+    unii: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    cas_number: Optional[str] = field(
+        default=None,
         metadata={
             "name": "cas-number",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    inchikey: str = field(
+    inchikey: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
+    )
+    average_mass: Optional[float] = field(
+        default=None,
+        metadata={
+            "name": "average-mass",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    monoisotopic_mass: Optional[float] = field(
+        default=None,
+        metadata={
+            "name": "monoisotopic-mass",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
     )
 
 
-class SnpAdverseDrugReactionListType(BaseModel):
+@dataclass
+class SnpAdverseDrugReactionListType:
     class Meta:
         name = "snp-adverse-drug-reaction-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     reaction: List[SnpAdverseDrugReactionType] = field(
         default_factory=list,
         metadata={
@@ -1328,11 +1810,11 @@ class SnpAdverseDrugReactionListType(BaseModel):
     )
 
 
-class SnpEffectListType(BaseModel):
+@dataclass
+class SnpEffectListType:
     class Meta:
         name = "snp-effect-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     effect: List[SnpEffectType] = field(
         default_factory=list,
         metadata={
@@ -1342,11 +1824,11 @@ class SnpEffectListType(BaseModel):
     )
 
 
-class SynonymListType(BaseModel):
+@dataclass
+class SynonymListType:
     class Meta:
         name = "synonym-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     synonym: List[SynonymType] = field(
         default_factory=list,
         metadata={
@@ -1356,11 +1838,25 @@ class SynonymListType(BaseModel):
     )
 
 
-class AtcCodeListType(BaseModel):
+@dataclass
+class TextbookListType:
+    class Meta:
+        name = "textbook-list-type"
+
+    textbook: List[TextbookType] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class AtcCodeListType:
     class Meta:
         name = "atc-code-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     atc_code: List[AtcCodeType] = field(
         default_factory=list,
         metadata={
@@ -1371,11 +1867,11 @@ class AtcCodeListType(BaseModel):
     )
 
 
-class CalculatedPropertyListType(BaseModel):
+@dataclass
+class CalculatedPropertyListType:
     class Meta:
         name = "calculated-property-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     property: List[CalculatedPropertyType] = field(
         default_factory=list,
         metadata={
@@ -1385,11 +1881,11 @@ class CalculatedPropertyListType(BaseModel):
     )
 
 
-class DrugInteractionListType(BaseModel):
+@dataclass
+class DrugInteractionListType:
     class Meta:
         name = "drug-interaction-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     drug_interaction: List[DrugInteractionType] = field(
         default_factory=list,
         metadata={
@@ -1400,11 +1896,11 @@ class DrugInteractionListType(BaseModel):
     )
 
 
-class ExperimentalPropertyListType(BaseModel):
+@dataclass
+class ExperimentalPropertyListType:
     class Meta:
         name = "experimental-property-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     property: List[ExperimentalPropertyType] = field(
         default_factory=list,
         metadata={
@@ -1414,11 +1910,11 @@ class ExperimentalPropertyListType(BaseModel):
     )
 
 
-class ExternalIdentifierListType(BaseModel):
+@dataclass
+class ExternalIdentifierListType:
     class Meta:
         name = "external-identifier-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     external_identifier: List[ExternalIdentifierType] = field(
         default_factory=list,
         metadata={
@@ -1429,11 +1925,11 @@ class ExternalIdentifierListType(BaseModel):
     )
 
 
-class ExternalLinkListType(BaseModel):
+@dataclass
+class ExternalLinkListType:
     class Meta:
         name = "external-link-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     external_link: List[ExternalLinkType] = field(
         default_factory=list,
         metadata={
@@ -1444,11 +1940,11 @@ class ExternalLinkListType(BaseModel):
     )
 
 
-class PathwayDrugListType(BaseModel):
+@dataclass
+class PathwayDrugListType:
     class Meta:
         name = "pathway-drug-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     drug: List[PathwayDrugType] = field(
         default_factory=list,
         metadata={
@@ -1459,11 +1955,11 @@ class PathwayDrugListType(BaseModel):
     )
 
 
-class PolypeptideExternalIdentifierListType(BaseModel):
+@dataclass
+class PolypeptideExternalIdentifierListType:
     class Meta:
         name = "polypeptide-external-identifier-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     external_identifier: List[PolypeptideExternalIdentifierType] = field(
         default_factory=list,
         metadata={
@@ -1474,48 +1970,113 @@ class PolypeptideExternalIdentifierListType(BaseModel):
     )
 
 
-class ReactionType(BaseModel):
+@dataclass
+class ProductListType:
+    class Meta:
+        name = "product-list-type"
+
+    product: List[ProductType] = field(
+        default_factory=list,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+
+
+@dataclass
+class ReactionType:
     class Meta:
         name = "reaction-type"
 
-    model_config = ConfigDict(defer_build=True)
-    sequence: str = field(
+    sequence: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    left_element: ReactionElementType = field(
+    left_element: Optional[ReactionElementType] = field(
+        default=None,
         metadata={
             "name": "left-element",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    right_element: ReactionElementType = field(
+    right_element: Optional[ReactionElementType] = field(
+        default=None,
         metadata={
             "name": "right-element",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    enzymes: ReactionEnzymeListType = field(
+    enzymes: Optional[ReactionEnzymeListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
 
 
-class SaltListType(BaseModel):
+@dataclass
+class ReferenceListType:
+    """
+    :ivar articles: Articles are typically PubMed references, although
+        there are some references which do not have a PubMed ID.
+    :ivar textbooks:
+    :ivar links:
+    :ivar attachments:
+    """
+
+    class Meta:
+        name = "reference-list-type"
+
+    articles: Optional[ArticleListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    textbooks: Optional[TextbookListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    links: Optional[LinkListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    attachments: Optional[AttachmentListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+
+
+@dataclass
+class SaltListType:
     class Meta:
         name = "salt-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     salt: List[SaltType] = field(
         default_factory=list,
         metadata={
@@ -1525,201 +2086,235 @@ class SaltListType(BaseModel):
     )
 
 
-class PathwayType(BaseModel):
+@dataclass
+class PathwayType:
     class Meta:
         name = "pathway-type"
 
-    model_config = ConfigDict(defer_build=True)
-    smpdb_id: str = field(
+    smpdb_id: Optional[str] = field(
+        default=None,
         metadata={
             "name": "smpdb-id",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    drugs: PathwayDrugListType = field(
+    category: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    enzymes: PathwayEnzymeListType = field(
+    drugs: Optional[PathwayDrugListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
+    )
+    enzymes: Optional[PathwayEnzymeListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
     )
 
 
-class PolypeptideType(BaseModel):
+@dataclass
+class PolypeptideType:
     class Meta:
         name = "polypeptide-type"
 
-    model_config = ConfigDict(defer_build=True)
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    general_function: str = field(
+    general_function: Optional[str] = field(
+        default=None,
         metadata={
             "name": "general-function",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    specific_function: str = field(
+    specific_function: Optional[str] = field(
+        default=None,
         metadata={
             "name": "specific-function",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    gene_name: str = field(
+    gene_name: Optional[str] = field(
+        default=None,
         metadata={
             "name": "gene-name",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    locus: str = field(
+    locus: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    cellular_location: str = field(
+    cellular_location: Optional[str] = field(
+        default=None,
         metadata={
             "name": "cellular-location",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    transmembrane_regions: str = field(
+    transmembrane_regions: Optional[str] = field(
+        default=None,
         metadata={
             "name": "transmembrane-regions",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    signal_regions: str = field(
+    signal_regions: Optional[str] = field(
+        default=None,
         metadata={
             "name": "signal-regions",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    theoretical_pi: str = field(
+    theoretical_pi: Optional[str] = field(
+        default=None,
         metadata={
             "name": "theoretical-pi",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    molecular_weight: str = field(
+    molecular_weight: Optional[str] = field(
+        default=None,
         metadata={
             "name": "molecular-weight",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    chromosome_location: str = field(
+    chromosome_location: Optional[str] = field(
+        default=None,
         metadata={
             "name": "chromosome-location",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    organism: "PolypeptideType.Organism" = field(
+    organism: Optional["PolypeptideType.Organism"] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    external_identifiers: PolypeptideExternalIdentifierListType = field(
+    external_identifiers: Optional[PolypeptideExternalIdentifierListType] = (
+        field(
+            default=None,
+            metadata={
+                "name": "external-identifiers",
+                "type": "Element",
+                "namespace": "http://www.drugbank.ca",
+                "required": True,
+            },
+        )
+    )
+    synonyms: Optional[PolypeptideSynonymListType] = field(
+        default=None,
         metadata={
-            "name": "external-identifiers",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    synonyms: PolypeptideSynonymListType = field(
-        metadata={
-            "type": "Element",
-            "namespace": "http://www.drugbank.ca",
-            "required": True,
-        }
-    )
-    amino_acid_sequence: SequenceType = field(
+    amino_acid_sequence: Optional[SequenceType] = field(
+        default=None,
         metadata={
             "name": "amino-acid-sequence",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    gene_sequence: SequenceType = field(
+    gene_sequence: Optional[SequenceType] = field(
+        default=None,
         metadata={
             "name": "gene-sequence",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    pfams: PfamListType = field(
+    pfams: Optional[PfamListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    go_classifiers: GoClassifierListType = field(
+    go_classifiers: Optional[GoClassifierListType] = field(
+        default=None,
         metadata={
             "name": "go-classifiers",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    id: str = field(
+    id: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Attribute",
             "required": True,
-        }
+        },
     )
-    source: str = field(
+    source: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Attribute",
             "required": True,
-        }
+        },
     )
 
-    class Organism(BaseModel):
-        model_config = ConfigDict(defer_build=True)
+    @dataclass
+    class Organism:
         value: str = field(
             default="",
             metadata={
@@ -1735,11 +2330,11 @@ class PolypeptideType(BaseModel):
         )
 
 
-class ReactionListType(BaseModel):
+@dataclass
+class ReactionListType:
     class Meta:
         name = "reaction-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     reaction: List[ReactionType] = field(
         default_factory=list,
         metadata={
@@ -1749,53 +2344,59 @@ class ReactionListType(BaseModel):
     )
 
 
-class CarrierType(BaseModel):
+@dataclass
+class CarrierType:
     class Meta:
         name = "carrier-type"
 
-    model_config = ConfigDict(defer_build=True)
-    id: str = field(
+    id: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    organism: str = field(
+    organism: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    actions: ActionListType = field(
+    actions: Optional[ActionListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    references: str = field(
+    references: Optional[ReferenceListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    known_action: KnownActionType = field(
+    known_action: Optional[KnownActionType] = field(
+        default=None,
         metadata={
             "name": "known-action",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     polypeptide: List[PolypeptideType] = field(
         default_factory=list,
@@ -1812,53 +2413,59 @@ class CarrierType(BaseModel):
     )
 
 
-class EnzymeType(BaseModel):
+@dataclass
+class EnzymeType:
     class Meta:
         name = "enzyme-type"
 
-    model_config = ConfigDict(defer_build=True)
-    id: str = field(
+    id: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    organism: str = field(
+    organism: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    actions: ActionListType = field(
+    actions: Optional[ActionListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    references: str = field(
+    references: Optional[ReferenceListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    known_action: KnownActionType = field(
+    known_action: Optional[KnownActionType] = field(
+        default=None,
         metadata={
             "name": "known-action",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     polypeptide: List[PolypeptideType] = field(
         default_factory=list,
@@ -1867,21 +2474,23 @@ class EnzymeType(BaseModel):
             "namespace": "http://www.drugbank.ca",
         },
     )
-    inhibition_strength: str = field(
+    inhibition_strength: Optional[str] = field(
+        default=None,
         metadata={
             "name": "inhibition-strength",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    induction_strength: str = field(
+    induction_strength: Optional[str] = field(
+        default=None,
         metadata={
             "name": "induction-strength",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     position: Optional[int] = field(
         default=None,
@@ -1891,11 +2500,11 @@ class EnzymeType(BaseModel):
     )
 
 
-class PathwayListType(BaseModel):
+@dataclass
+class PathwayListType:
     class Meta:
         name = "pathway-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     pathway: List[PathwayType] = field(
         default_factory=list,
         metadata={
@@ -1905,11 +2514,11 @@ class PathwayListType(BaseModel):
     )
 
 
-class PolypeptideListType(BaseModel):
+@dataclass
+class PolypeptideListType:
     class Meta:
         name = "polypeptide-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     polypeptide: List[PolypeptideType] = field(
         default_factory=list,
         metadata={
@@ -1919,53 +2528,59 @@ class PolypeptideListType(BaseModel):
     )
 
 
-class TargetType(BaseModel):
+@dataclass
+class TargetType:
     class Meta:
         name = "target-type"
 
-    model_config = ConfigDict(defer_build=True)
-    id: str = field(
+    id: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    organism: str = field(
+    organism: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    actions: ActionListType = field(
+    actions: Optional[ActionListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    references: str = field(
+    references: Optional[ReferenceListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    known_action: KnownActionType = field(
+    known_action: Optional[KnownActionType] = field(
+        default=None,
         metadata={
             "name": "known-action",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     polypeptide: List[PolypeptideType] = field(
         default_factory=list,
@@ -1982,53 +2597,59 @@ class TargetType(BaseModel):
     )
 
 
-class TransporterType(BaseModel):
+@dataclass
+class TransporterType:
     class Meta:
         name = "transporter-type"
 
-    model_config = ConfigDict(defer_build=True)
-    id: str = field(
+    id: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    organism: str = field(
+    organism: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    actions: ActionListType = field(
+    actions: Optional[ActionListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    references: str = field(
+    references: Optional[ReferenceListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    known_action: KnownActionType = field(
+    known_action: Optional[KnownActionType] = field(
+        default=None,
         metadata={
             "name": "known-action",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     polypeptide: List[PolypeptideType] = field(
         default_factory=list,
@@ -2045,11 +2666,11 @@ class TransporterType(BaseModel):
     )
 
 
-class CarrierListType(BaseModel):
+@dataclass
+class CarrierListType:
     class Meta:
         name = "carrier-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     carrier: List[CarrierType] = field(
         default_factory=list,
         metadata={
@@ -2059,11 +2680,11 @@ class CarrierListType(BaseModel):
     )
 
 
-class EnzymeListType(BaseModel):
+@dataclass
+class EnzymeListType:
     class Meta:
         name = "enzyme-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     enzyme: List[EnzymeType] = field(
         default_factory=list,
         metadata={
@@ -2073,11 +2694,11 @@ class EnzymeListType(BaseModel):
     )
 
 
-class TargetListType(BaseModel):
+@dataclass
+class TargetListType:
     class Meta:
         name = "target-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     target: List[TargetType] = field(
         default_factory=list,
         metadata={
@@ -2087,11 +2708,11 @@ class TargetListType(BaseModel):
     )
 
 
-class TransporterListType(BaseModel):
+@dataclass
+class TransporterListType:
     class Meta:
         name = "transporter-list-type"
 
-    model_config = ConfigDict(defer_build=True)
     transporter: List[TransporterType] = field(
         default_factory=list,
         metadata={
@@ -2101,12 +2722,12 @@ class TransporterListType(BaseModel):
     )
 
 
-class DrugType(BaseModel):
+@dataclass
+class DrugType:
     class Meta:
         name = "drug-type"
 
-    model_config = ConfigDict(defer_build=True)
-    drugbank_id: List[DrugbankDrugIdType] = field(
+    drugbank_id: List[DrugbankDrugSaltIdType] = field(
         default_factory=list,
         metadata={
             "name": "drugbank-id",
@@ -2115,132 +2736,180 @@ class DrugType(BaseModel):
             "min_occurs": 1,
         },
     )
-    name: str = field(
+    name: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    description: str = field(
+    description: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    cas_number: str = field(
+    cas_number: Optional[str] = field(
+        default=None,
         metadata={
             "name": "cas-number",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    groups: GroupListType = field(
+    unii: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    general_references: str = field(
+    average_mass: Optional[float] = field(
+        default=None,
+        metadata={
+            "name": "average-mass",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    monoisotopic_mass: Optional[float] = field(
+        default=None,
+        metadata={
+            "name": "monoisotopic-mass",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    state: Optional[StateType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    groups: Optional[GroupListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    general_references: Optional[ReferenceListType] = field(
+        default=None,
         metadata={
             "name": "general-references",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    synthesis_reference: str = field(
+    synthesis_reference: Optional[str] = field(
+        default=None,
         metadata={
             "name": "synthesis-reference",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    indication: str = field(
+    indication: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    pharmacodynamics: str = field(
+    pharmacodynamics: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    mechanism_of_action: str = field(
+    mechanism_of_action: Optional[str] = field(
+        default=None,
         metadata={
             "name": "mechanism-of-action",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    toxicity: str = field(
+    toxicity: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    metabolism: str = field(
+    metabolism: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    absorption: str = field(
+    absorption: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    half_life: str = field(
+    half_life: Optional[str] = field(
+        default=None,
         metadata={
             "name": "half-life",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    protein_binding: str = field(
+    protein_binding: Optional[str] = field(
+        default=None,
         metadata={
             "name": "protein-binding",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    route_of_elimination: str = field(
+    route_of_elimination: Optional[str] = field(
+        default=None,
         metadata={
             "name": "route-of-elimination",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    volume_of_distribution: str = field(
+    volume_of_distribution: Optional[str] = field(
+        default=None,
         metadata={
             "name": "volume-of-distribution",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    clearance: str = field(
+    clearance: Optional[str] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     classification: Optional[ClassificationType] = field(
         default=None,
@@ -2249,115 +2918,163 @@ class DrugType(BaseModel):
             "namespace": "http://www.drugbank.ca",
         },
     )
-    salts: SaltListType = field(
+    salts: Optional[SaltListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    synonyms: SynonymListType = field(
+    synonyms: Optional[SynonymListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    brands: BrandListType = field(
+    products: Optional[ProductListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    mixtures: MixtureListType = field(
+    international_brands: Optional[InternationalBrandListType] = field(
+        default=None,
+        metadata={
+            "name": "international-brands",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    mixtures: Optional[MixtureListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    packagers: PackagerListType = field(
+    packagers: Optional[PackagerListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    manufacturers: ManufacturerListType = field(
+    manufacturers: Optional[ManufacturerListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    prices: PriceListType = field(
+    prices: Optional[PriceListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    categories: CategoryListType = field(
+    categories: Optional[CategoryListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    affected_organisms: AffectedOrganismListType = field(
+    affected_organisms: Optional[AffectedOrganismListType] = field(
+        default=None,
         metadata={
             "name": "affected-organisms",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    dosages: DosageListType = field(
+    dosages: Optional[DosageListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    atc_codes: AtcCodeListType = field(
+    atc_codes: Optional[AtcCodeListType] = field(
+        default=None,
         metadata={
             "name": "atc-codes",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    ahfs_codes: AhfsCodeListType = field(
+    ahfs_codes: Optional[AhfsCodeListType] = field(
+        default=None,
         metadata={
             "name": "ahfs-codes",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    patents: PatentListType = field(
+    pdb_entries: Optional[PdbEntryListType] = field(
+        default=None,
+        metadata={
+            "name": "pdb-entries",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    fda_label: Optional[str] = field(
+        default=None,
+        metadata={
+            "name": "fda-label",
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    msds: Optional[str] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+        },
+    )
+    patents: Optional[PatentListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    food_interactions: FoodInteractionListType = field(
+    food_interactions: Optional[FoodInteractionListType] = field(
+        default=None,
         metadata={
             "name": "food-interactions",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    drug_interactions: DrugInteractionListType = field(
+    drug_interactions: Optional[DrugInteractionListType] = field(
+        default=None,
         metadata={
             "name": "drug-interactions",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
     sequences: Optional[SequenceListType] = field(
         default=None,
@@ -2374,110 +3091,127 @@ class DrugType(BaseModel):
             "namespace": "http://www.drugbank.ca",
         },
     )
-    experimental_properties: ExperimentalPropertyListType = field(
+    experimental_properties: Optional[ExperimentalPropertyListType] = field(
+        default=None,
         metadata={
             "name": "experimental-properties",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    external_identifiers: ExternalIdentifierListType = field(
+    external_identifiers: Optional[ExternalIdentifierListType] = field(
+        default=None,
         metadata={
             "name": "external-identifiers",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    external_links: ExternalLinkListType = field(
+    external_links: Optional[ExternalLinkListType] = field(
+        default=None,
         metadata={
             "name": "external-links",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    pathways: PathwayListType = field(
+    pathways: Optional[PathwayListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    reactions: ReactionListType = field(
+    reactions: Optional[ReactionListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    snp_effects: SnpEffectListType = field(
+    snp_effects: Optional[SnpEffectListType] = field(
+        default=None,
         metadata={
             "name": "snp-effects",
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    snp_adverse_drug_reactions: SnpAdverseDrugReactionListType = field(
-        metadata={
-            "name": "snp-adverse-drug-reactions",
-            "type": "Element",
-            "namespace": "http://www.drugbank.ca",
-            "required": True,
-        }
+    snp_adverse_drug_reactions: Optional[SnpAdverseDrugReactionListType] = (
+        field(
+            default=None,
+            metadata={
+                "name": "snp-adverse-drug-reactions",
+                "type": "Element",
+                "namespace": "http://www.drugbank.ca",
+                "required": True,
+            },
+        )
     )
-    targets: TargetListType = field(
-        metadata={
-            "type": "Element",
-            "namespace": "http://www.drugbank.ca",
-            "required": True,
-        }
-    )
-    enzymes: EnzymeListType = field(
+    targets: Optional[TargetListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    carriers: CarrierListType = field(
+    enzymes: Optional[EnzymeListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    transporters: TransporterListType = field(
+    carriers: Optional[CarrierListType] = field(
+        default=None,
         metadata={
             "type": "Element",
             "namespace": "http://www.drugbank.ca",
             "required": True,
-        }
+        },
     )
-    type_value: DrugTypeType = field(
+    transporters: Optional[TransporterListType] = field(
+        default=None,
+        metadata={
+            "type": "Element",
+            "namespace": "http://www.drugbank.ca",
+            "required": True,
+        },
+    )
+    type_value: Optional[DrugTypeType] = field(
+        default=None,
         metadata={
             "name": "type",
             "type": "Attribute",
             "required": True,
-        }
+        },
     )
-    created: XmlDate = field(
+    created: Optional[XmlDate] = field(
+        default=None,
         metadata={
             "type": "Attribute",
             "required": True,
-        }
+        },
     )
-    updated: XmlDate = field(
+    updated: Optional[XmlDate] = field(
+        default=None,
         metadata={
             "type": "Attribute",
             "required": True,
-        }
+        },
     )
 
 
-class DrugbankType(BaseModel):
+@dataclass
+class DrugbankType:
     """
     This is the root element type for the DrugBank database schema.
 
@@ -2489,7 +3223,6 @@ class DrugbankType(BaseModel):
     class Meta:
         name = "drugbank-type"
 
-    model_config = ConfigDict(defer_build=True)
     drug: List[DrugType] = field(
         default_factory=list,
         metadata={
@@ -2502,6 +3235,7 @@ class DrugbankType(BaseModel):
         default=None,
         metadata={
             "type": "Attribute",
+            "required": True,
         },
     )
     exported_on: Optional[XmlDate] = field(
@@ -2509,10 +3243,12 @@ class DrugbankType(BaseModel):
         metadata={
             "name": "exported-on",
             "type": "Attribute",
+            "required": True,
         },
     )
 
 
+@dataclass
 class Drugbank(DrugbankType):
     """This is the root element for the DrugBank database schema.
 
@@ -2522,5 +3258,3 @@ class Drugbank(DrugbankType):
     class Meta:
         name = "drugbank"
         namespace = "http://www.drugbank.ca"
-
-    model_config = ConfigDict(defer_build=True)

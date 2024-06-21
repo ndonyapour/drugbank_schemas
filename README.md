@@ -1,4 +1,4 @@
-# rxiv-types (v0.1.0)
+# drugbank_schemas (v0.1.0)
 
 <p align="center">
     <img src="https://img.shields.io/pypi/dm/rxiv-types?style=flat-square" />
@@ -14,10 +14,11 @@
 
 ## Introduction
 
-This package goal is to provide the Pydantic models for Drugbank schema files (XSD).
+The purpose of this package is to offer Pydantic models for Drugbank schema files (XSD).
+It generate Pydantic classess that help parsing Drugbank XML Data files using the
+`xsdata-pydantic` tool. 
 
-
-## Why do I need this?
+<!-- ## Why do I need this?
 
 Parsing XML on its own is challenging. Add to it the feature rich data inside of each
 citation, and you will find yourself with hours or days of navigating the XML structure.
@@ -27,20 +28,20 @@ The approach here was to autogenerate Pydantic classes to parse the XML using th
 is parsed properly, and an error is thrown if something is missing or incorrect. Instead
 of using dictionaries to hold the data, Pydantic classes have the benefit of providing
 type hints with tab completion for IDEs, making it easier to navigate the complex
-structure of the citation data.
+structure of the citation data. -->
 
 ## How do I use it?
 You can import the generated Pydantic models for drunbank schema files and use them 
 to parse your drugbank XML files.
 
-### Example 1: Parse ChemRxiv Data
+<!-- ### Example 1: Parse ChemRxiv Data
 
 ```python
 from pathlib import Path
 
 import requests
 
-from rxiv_types import chemrxiv_records
+from drugbank_schemas.models.drugbank_latest import Drugbank
 
 chemrxiv_url = "https://chemrxiv.org/engage/chemrxiv/public-api/v1/oai?verb=ListRecords&metadataPrefix=oai_dc&from=2000-01-01"
 
@@ -59,9 +60,9 @@ print("Paper 1:")
 print(f"Title: {''.join(result.list_records.record[0].metadata.dc.title)}")
 print(f"Authors: {'; '.join(result.list_records.record[0].metadata.dc.creator)}")
 print(f"Abstract: {''.join(result.list_records.record[0].metadata.dc.description)}")
-```
+``` -->
 
-Output:
+# Output:
 <!-- 
 ```bash
 Paper 1:

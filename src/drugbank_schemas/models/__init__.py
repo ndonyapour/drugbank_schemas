@@ -1,4 +1,4 @@
-from src.drugbank.models.drugbank_latest import (
+from src.drugbank_schemas.models.drugbank_latest import (
     ActionListType,
     AffectedOrganismListType,
     AhfsCodeListType,

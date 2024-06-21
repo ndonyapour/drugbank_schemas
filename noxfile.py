@@ -42,12 +42,16 @@ def generate_packages(session):
         # Generate the models
         session.run(
             "xsdata",
+            "generate", 
             f"downloads/schemas/drugbank_{schema_version}.xsd",
-            "--output",
-            "pydantic",
+            # "--output",
+            # "pydantic",
             "--package",
-            f"src.drugbank.models",
-            "--debug",
+            f"src.drugbank_schemas.models",
+            # "--structure-style",
+            # "namespace-clusters",
+            # "--relative-imports",
+            #"--debug",
         )
 
     # Remove extraneous __init__ file
