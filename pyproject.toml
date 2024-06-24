@@ -24,7 +24,7 @@ classifiers = [
 ]
 
 [tool.poetry.urls]
-"Issues" = "https://github.com/nicholas-schaub/rxiv-types/issues"
+"Issues" = "https://github.com/ndonyapour/drugbank_schemas/issues"
 
 [tool.poetry.dependencies]
 python = "^3.9"
